@@ -1,0 +1,63 @@
+"""
+A good example for practicing multithreading in python. Here in frame we have 2 buttons and 1 text box and 2 lables
+if we click on 10 second button then the timer will start. If we didn't used the threading concept here
+while clicking on '10 second' button program will stack for 10 seconds and we couldn't use other button and
+text box. But now using threads we can show timer and use the button to show random numbers plus typing in
+text box. Another advantage is when we have error in one thread it will not affect other threads and program continue
+to execute.
+"""
+
+# importing the modules
+import time
+from random import randint
+from threading import Thread
+from tkinter import *
+from tkinter.ttk import *
+
+# Frame settings
+root = Tk()
+root.title("Multithreading Example")
+root.geometry("500x600")
+
+
+# Function to get random nubmers and display on frame
+def randomNO():
+    label_2.config(text=f"Random number: {randint(0, 100)}")
+
+
+# Label to display timer
+label_1 = Label(root, text=" Timer will be Shown Here !")
+label_1.pack(pady=20)
+
+# Label to display random numbers
+label_2 = Label(root, text="")
+label_2.pack(pady=20)
+
+
+# Function to call the timer in thread
+def show():
+    thread1 = Thread(target=timer1)
+    thread1.start()
+
+
+# Functino to show timer
+def timer1():
+    i = 10
+    while i > 0:
+        label_1.config(text=f"Timer: " + str(i))
+        time.sleep(1)
+        i -= 1
+    label_1.config(text="Timer Stoped")
+
+
+# Button to start timer
+button1 = Button(root, text="10 second Timer", command=show)
+button1.pack(pady=20)
+
+# Button to show random numbers
+mybutton2 = Button(root, text="Random button", command=randomNO)
+mybutton2.pack(pady=20)
+
+# Text box to type in
+myText = Text(root).pack()
+root.mainloop()
